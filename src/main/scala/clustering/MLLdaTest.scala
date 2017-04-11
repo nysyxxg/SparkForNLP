@@ -75,6 +75,5 @@ object MLLdaTest {
 				d2(x)
 				}
 		}.show(5)
-
 	}
 }

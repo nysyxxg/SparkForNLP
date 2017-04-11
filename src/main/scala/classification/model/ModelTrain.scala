@@ -1,15 +1,14 @@
-package spark
+package classification.model
 
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.MultilayerPerceptronClassifier
-import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator
 import org.apache.spark.ml.feature._
 import org.apache.spark.sql.SparkSession
 
 /**
 	* Created by MingDong on 2016/9/1.
 	*/
-object Test5 {
+object ModelTrain {
 
 	case class RawDataRecord(label: String, message: String)
 
@@ -17,7 +16,7 @@ object Test5 {
 
 	def main(args: Array[String]): Unit = {
 		val spark = SparkSession
-			.builder().master("local")
+			.builder().master("local[2]")
 			.config("spark.sql.warehouse.dir", "file:///:D:\\IdeaProjects\\sparktest\\spark-warehouse")
 			.getOrCreate()
 		val sc = spark.sparkContext
@@ -30,16 +29,21 @@ object Test5 {
 		}
 
 		val msgDF = spark.createDataFrame(parsedRDD).toDF("label", "message")
+		val lables = msgDF.select("label");
 		val labelIndexer = new StringIndexer()
 			.setInputCol("label")
 			.setOutputCol("indexedLabel")
-			.fit(msgDF)
+			.fit(lables)
+
+		val la = labelIndexer.transform(msgDF);
 
 		val word2Vec = new Word2Vec()
 			.setInputCol("message")
 			.setOutputCol("features")
 			.setVectorSize(VECTOR_SIZE)
 			.setMinCount(1)
+    val wa = word2Vec.fit(la)
+		val wo = wa.transform(msgDF.select("message"))
 
 		val layers = Array[Int](VECTOR_SIZE, 14, 7, 14)
 		val mlpc = new MultilayerPerceptronClassifier()
@@ -51,6 +55,7 @@ object Test5 {
 			.setLabelCol("indexedLabel")
 			.setPredictionCol("prediction")
 
+		val mmodel = mlpc.fit(wo)
 		val labelConverter = new IndexToString()
 			.setInputCol("prediction")
 			.setOutputCol("predictedLabel")

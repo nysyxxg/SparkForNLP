@@ -1,4 +1,4 @@
-package Server;
+package classification;
 
 import java.io.*;
 import java.net.Socket;
@@ -13,7 +13,7 @@ public class Client {
         PrintWriter pw = null;
         try {
             //客户端socket指定服务器的地址和端口号
-            socket = new Socket("192.168.1.109", 9999);
+            socket = new Socket("172.16.110.11", 9930);
             System.out.println("Socket=" + socket);
             //同服务器原理一样
             br = new BufferedReader(new InputStreamReader(

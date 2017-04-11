@@ -1,4 +1,4 @@
-package socket
+package classification
 
 import org.ansj.splitWord.analysis.ToAnalysis
 import org.ansj.util.FilterModifWord
@@ -7,6 +7,7 @@ import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{Row, SparkSession}
 
 import scala.collection.JavaConversions._
+
 /**
 	* Created by MingDong on 2016/9/7.
 	*/
@@ -16,8 +17,6 @@ object getModel {
 		.config("spark.sql.warehouse.dir", "park-warehouse")
 		.getOrCreate()
 	val sc = spark.sparkContext
-
-	import spark.implicits._
 
 	def model(): PipelineModel = {
 

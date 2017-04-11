@@ -1,7 +1,6 @@
-package Server;
+package classification;
 
 import org.apache.spark.ml.PipelineModel;
-import socket.getModel;
 
 import java.io.*;
 import java.net.Socket;

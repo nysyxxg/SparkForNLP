@@ -17,7 +17,7 @@ import scala.collection.JavaConversions._
 /**
 	* Created by MingDong on 2016/8/23.
 	*/
-object GetData3 {
+object DealDataFromHbase {
 	val f: Forest = null
 
 	def main(args: Array[String]): Unit = {

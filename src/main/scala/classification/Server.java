@@ -1,11 +1,11 @@
-package Server;
+package classification;
 
 import org.apache.spark.ml.PipelineModel;
-import socket.getModel;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 
 /**
  * Created by MingDong on 2016/9/8.
@@ -16,11 +16,12 @@ public class Server {
         ServerSocket s = null;
         Socket socket = null;
         try {
-            s = new ServerSocket(9999);
+            s = new ServerSocket(9930);
             //等待新请求、否则一直阻塞
             while (true) {
                 socket = s.accept();
                 System.out.println("socket:" + socket);
+               // new Server.ServeOneJabbr(socket,model);
                 new ServeOneJabbr(socket,model);
 
             }
